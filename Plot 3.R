@@ -1,0 +1,13 @@
+
+library(sqldf)
+dat <- read.csv.sql("exdata_data_household_power_consumption/household_power_consumption.txt", sql = "SELECT * from file WHERE Date IN ('1/2/2007','2/2/2007') ", sep = ";", header = TRUE,colClasses="character")
+date_time<-paste(dat[,1],dat[,2])
+date_time<-parse_date_time(x = date_time,orders = "dmy_HMS")
+dat[,c(3:9)]<-as.numeric(unlist(dat[,c(3:9)]))
+png(file="plot 3.png",width = 480,height = 480)
+plot(x = date_time,y = dat[,7],type="n",xlab = "",ylab = "Energy Sub metering")
+lines(x = date_time,y = dat[,7])
+lines(x = date_time,y = dat[,9],col="blue")
+lines(x = date_time,y = dat[,8],col="red")
+legend("topright",legend=c("sub_metering_1","sub_metering_2","sub_metering_3"),lty=c(1,1,1),col=c("black","blue","red"))
+dev.off()

@@ -1,0 +1,8 @@
+library(sqldf)
+dat <- read.csv.sql("exdata_data_household_power_consumption/household_power_consumption.txt", sql = "SELECT * from file WHERE Date IN ('1/2/2007','2/2/2007') ", sep = ";", header = TRUE,colClasses="character")
+date_time<-paste(dat[,1],dat[,2])
+date_time<-parse_date_time(x = date_time,orders = "dmy_HMS")
+dat[,3]<-as.numeric(dat[,3])
+png(file="plot 2.png",width = 480,height = 480)
+plot(x = date_time,y = dat[,3],type="l",xlab = "",ylab = "Global Active Power (kilowatts)")
+dev.off()
